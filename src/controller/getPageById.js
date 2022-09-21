@@ -12,20 +12,46 @@ export const getPageById = async ({ params: { id } }, res) => {
     page_id: id,
     auth: notionSecret,
   });
+  const comments = await notion.comments.list({
+    auth: notionSecret,
+    block_id: id,
+  });
+
+  const pageInfo = {
+    id: page.id,
+    createdAt: page.properties.createdAt.created_time,
+    icon: page.icon,
+    type: page.properties.type.select.name,
+    status: page.properties.status.select.name,
+    title: page.properties.name.title[0].plain_text,
+  };
 
   const blockChild = await notion.blocks.children.list({
     block_id: id,
     auth: notionSecret,
   });
-  // const returnArr = blockChild.results
-  //   .map((result) => {
-  //     const richText = result[result.type].rich_text[0];
-  //     if (richText) {
-  //       const type = result[result.type].rich_text[0].type;
-  //       return { type: result.type, ...richText[type] };
-  //     }
-  //   })
-  //   .filter((item) => item !== undefined);
 
-  res.send({ page, child: blockChild.results });
+  const returnArr = blockChild.results
+    .map((result) => {
+      var type = result.type;
+      var payload = result[result.type];
+      var link = null;
+      if (type === "divider") {
+        payload = "divider";
+      }
+      if (payload.rich_text) {
+        if (payload.rich_text.length > 0) {
+          link = payload.rich_text[0].href;
+          payload = payload.rich_text[0].plain_text;
+        } else {
+          type = "blank";
+          payload = "";
+        }
+      }
+
+      return { id: result.id, type, payload, link };
+    })
+    .filter((item) => item !== undefined);
+
+  res.send({ comments, pageInfo, child: returnArr });
 };

@@ -15,20 +15,36 @@ export const getNotionListByCursor = async (req, res) => {
       page_size: 10,
       ...(parseInt(cursor) !== 0 && { start_cursor: cursor }),
     });
-    res.send(page);
+
+    const returnObj = page.results.map((result) => {
+      const id = result.id;
+      const createdAt = result.properties.createdAt.created_time;
+      const icon = result.icon;
+      const type = result.properties.type.select.name;
+      const status = result.properties.status.select.name;
+      const site = result.properties.site.rich_text[0].plain_text;
+      const title = result.properties.name.title[0].plain_text;
+      return { id, createdAt, icon, type, status, site, title };
+    });
+
+    res.send({
+      next_cursor: page.next_cursor,
+      has_more: page.has_more,
+      results: returnObj,
+    });
   } catch (error) {
     res.send(error.body);
   }
 
   // const returnObj = page.results.map((result) => {
-  //   const createdAt = result.properties.createdAt.created_time;
-  //   const icon = result.icon.emoji;
-  //   const type = result.properties.type.select.name;
-  //   const status = result.properties.status.select.name;
-  //   const site = result.properties.site.select.name;
-  //   const title = result.properties.name.title[0].text.content;
-  //   const idx = result.id;
-  //   const object = result.object;
+  // const createdAt = result.properties.createdAt.created_time;
+  // const icon = result.icon.emoji;
+  // const type = result.properties.type.select.name;
+  // const status = result.properties.status.select.name;
+  // const site = result.properties.site.select.name;
+  // const title = result.properties.name.title[0].text.content;
+  // const idx = result.id;
+  // const object = result.object;
   //   return { object, createdAt, icon, type, title, idx, site, status };
   // });
 };
