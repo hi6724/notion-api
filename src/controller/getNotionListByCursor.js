@@ -13,7 +13,7 @@ export const getNotionListByCursor = async (req, res) => {
       database_id: notionDatabaseId,
       auth: notionSecret,
       page_size: 10,
-      ...(parseInt(cursor) !== 0 && { start_cursor: cursor }),
+      ...(cursor != 0 && { start_cursor: cursor }),
     });
 
     const returnObj = page.results.map((result) => {
