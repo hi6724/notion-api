@@ -1,4 +1,5 @@
 //express 모듈 불러오기
+import "regenerator-runtime";
 import express from "express";
 import cors from "cors";
 
