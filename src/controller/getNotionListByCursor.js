@@ -1,7 +1,7 @@
 import { Client } from "@notionhq/client";
 
-const notionDatabaseId = "46055058d58743b1936f395c3dbac43c";
-const notionSecret = "secret_CMIno6AJsiCyPkfetNN7oNqo8dxMH5pzcv0EZ93pJcs";
+const notionDatabaseId = "8a3bdeb10ce94834a5ba6a8476f4d43c";
+const notionSecret = "secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm";
 
 export const getNotionListByCursor = async (req, res) => {
   console.log(req.query.count);
