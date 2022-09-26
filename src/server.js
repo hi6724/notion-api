@@ -4,6 +4,7 @@ import cors from "cors";
 
 import router from "./router/router";
 
+const PORT = process.env.PORT || 8800;
 const app = express();
 
 app.use(cors());
@@ -12,4 +13,4 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/", router);
 
-app.listen(8800, () => console.log("http://localhost:8800"));
+app.listen(PORT, () => console.log(`http://localhost:${PORT}`));
