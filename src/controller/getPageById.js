@@ -1,6 +1,5 @@
 import { Client } from "@notionhq/client";
 
-const notionDatabaseId = "46055058d58743b1936f395c3dbac43c";
 const notionSecret = "secret_CMIno6AJsiCyPkfetNN7oNqo8dxMH5pzcv0EZ93pJcs";
 
 export const getPageById = async ({ params: { id } }, res) => {
@@ -12,6 +11,7 @@ export const getPageById = async ({ params: { id } }, res) => {
     page_id: id,
     auth: notionSecret,
   });
+
   const comments = await notion.comments.list({
     auth: notionSecret,
     block_id: id,

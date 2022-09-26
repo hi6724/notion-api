@@ -4,6 +4,7 @@ const notionDatabaseId = "46055058d58743b1936f395c3dbac43c";
 const notionSecret = "secret_CMIno6AJsiCyPkfetNN7oNqo8dxMH5pzcv0EZ93pJcs";
 
 export const getNotionListByCursor = async (req, res) => {
+  console.log(req.query.count);
   const notion = new Client({
     auth: notionSecret,
   });
@@ -12,7 +13,7 @@ export const getNotionListByCursor = async (req, res) => {
     const page = await notion.databases.query({
       database_id: notionDatabaseId,
       auth: notionSecret,
-      page_size: 10,
+      page_size: req.query.count * 1,
       ...(cursor != 0 && { start_cursor: cursor }),
     });
 
