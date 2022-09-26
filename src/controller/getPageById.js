@@ -1,6 +1,6 @@
 import { Client } from "@notionhq/client";
 
-const notionSecret = "secret_CMIno6AJsiCyPkfetNN7oNqo8dxMH5pzcv0EZ93pJcs";
+const notionSecret = "secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm";
 
 export const getPageById = async ({ params: { id } }, res) => {
   const notion = new Client({
