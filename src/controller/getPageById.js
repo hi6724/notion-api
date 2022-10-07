@@ -21,9 +21,9 @@ export const getPageById = async ({ params: { id } }, res) => {
     const pageInfo = {
       id: page.id,
       createdAt: page.properties.createdAt.created_time,
-      icon: page.icon,
+      icon: page.icon ? page.icon : null,
       type: page.properties.type.select.name,
-      status: page.properties.status.select.name,
+      status: page.properties.status?.select?.name,
       title: page.properties.name.title[0].plain_text,
     };
 
