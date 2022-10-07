@@ -13,18 +13,28 @@ export const getProjectList = async (req, res) => {
       database_id,
       auth: notionSecret,
     });
-
     const returnObj = projects.results.map((result) => {
       const id = result.id;
       const icon = result.icon;
       const startData = result.properties.date.date.start;
       const endDate = result.properties.date.date.end;
       const type = result.properties.type.select.name;
+      const title = result.properties.name.title[0].plain_text;
+      const coverType = result.cover.type;
+      const thumbImageUri = result.cover[coverType].url;
       const skills = result.properties.skills?.multi_select.map(
         (skill) => skill.name
       );
-      const title = result.properties.name.title[0].plain_text;
-      return { id, icon, startData, endDate, type, title, skills };
+      return {
+        id,
+        icon,
+        thumbImageUri,
+        startData,
+        endDate,
+        type,
+        title,
+        skills,
+      };
     });
 
     res.send(returnObj);
