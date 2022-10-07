@@ -14,6 +14,17 @@ export const getNotionListByCursor = async (req, res) => {
       auth: notionSecret,
       page_size: req.query.count * 1,
       ...(cursor != 0 && { start_cursor: cursor }),
+      ...(req.query.filter &&
+        req.query.filter !== "all" && {
+          filter: {
+            and: [
+              {
+                property: "type",
+                select: { equals: req.query.filter },
+              },
+            ],
+          },
+        }),
     });
 
     const returnObj = page.results.map((result) => {
