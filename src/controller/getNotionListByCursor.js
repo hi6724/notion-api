@@ -15,7 +15,8 @@ export const getNotionListByCursor = async (req, res) => {
       page_size: req.query.count * 1,
       ...(cursor != 0 && { start_cursor: cursor }),
       ...(req.query.filter &&
-        req.query.filter !== "all" && {
+        req.query.filter !== "all" &&
+        req.query.filter !== "others" && {
           filter: {
             and: [
               {
@@ -25,6 +26,30 @@ export const getNotionListByCursor = async (req, res) => {
             ],
           },
         }),
+      ...(req.query.filter === "others" && {
+        filter: {
+          and: [
+            {
+              property: "type",
+              select: {
+                does_not_equal: "frontend",
+              },
+            },
+            {
+              property: "type",
+              select: {
+                does_not_equal: "backend",
+              },
+            },
+            {
+              property: "type",
+              select: {
+                does_not_equal: "algorithm",
+              },
+            },
+          ],
+        },
+      }),
     });
 
     const returnObj = page.results.map((result) => {
