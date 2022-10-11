@@ -46,16 +46,4 @@ export const getNotionListByCursor = async (req, res) => {
   } catch (error) {
     res.send(error.body);
   }
-
-  // const returnObj = page.results.map((result) => {
-  // const createdAt = result.properties.createdAt.created_time;
-  // const icon = result.icon.emoji;
-  // const type = result.properties.type.select.name;
-  // const status = result.properties.status.select.name;
-  // const site = result.properties.site.select.name;
-  // const title = result.properties.name.title[0].text.content;
-  // const idx = result.id;
-  // const object = result.object;
-  //   return { object, createdAt, icon, type, title, idx, site, status };
-  // });
 };
