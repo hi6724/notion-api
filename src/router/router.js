@@ -4,8 +4,8 @@ import { createCommentById } from "../controller/createCommentById";
 import { getNotionListByCursor } from "../controller/getNotionListByCursor";
 import { getPageById } from "../controller/getPageById";
 import { getProjectList } from "../controller/getProjectsList";
-import { mattermostApi } from "../controller/mattermostApi";
 import { mattermostEmoji } from "../controller/mattermostEmoji";
+import { randomShinChan } from "../controller/randomShinChan";
 
 const router = express.Router();
 
@@ -15,7 +15,7 @@ router.get("/notion/:id", getPageById);
 router.get("/projects", getProjectList);
 router.post("/notion/:id", createCommentById);
 
-router.get("/mattermost", mattermostApi);
 router.post("/mattermost", mattermostEmoji);
+router.post("/randomShinChang", randomShinChan);
 
 export default router;
