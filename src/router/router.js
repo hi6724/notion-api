@@ -5,6 +5,7 @@ import { getNotionListByCursor } from "../controller/getNotionListByCursor";
 import { getPageById } from "../controller/getPageById";
 import { getProjectList } from "../controller/getProjectsList";
 import { mattermostApi } from "../controller/mattermostApi";
+import { mattermostEmoji } from "../controller/mattermostEmoji";
 
 const router = express.Router();
 
@@ -15,5 +16,6 @@ router.get("/projects", getProjectList);
 router.post("/notion/:id", createCommentById);
 
 router.get("/mattermost", mattermostApi);
+router.post("/mattermost", mattermostEmoji);
 
 export default router;

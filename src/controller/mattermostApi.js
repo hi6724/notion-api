@@ -1,6 +1,3 @@
-const database_id = "68009bd6df9640f9b09322eb70a3dee5";
-const notionSecret = "secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm";
-
 export const mattermostApi = async (req, res) => {
   try {
     const returnObj = {
