@@ -13,6 +13,7 @@ export const getProjectList = async (req, res) => {
       database_id,
       auth: notionSecret,
     });
+
     const returnObj = projects.results.map((result) => {
       const id = result.id;
       const icon = result.icon;
@@ -20,6 +21,7 @@ export const getProjectList = async (req, res) => {
       const endDate = result.properties.date.date.end;
       const type = result.properties.type.select.name;
       const title = result.properties.name.title[0].plain_text;
+      const overview = result.properties.overview.rich_text[0].plain_text;
       const coverType = result.cover.type;
       const thumbImageUri = result.cover[coverType].url;
       const skills = result.properties.skills?.multi_select.map(
@@ -34,11 +36,12 @@ export const getProjectList = async (req, res) => {
         type,
         title,
         skills,
+        overview,
       };
     });
 
-    res.send(returnObj);
+    return res.send(returnObj);
   } catch (error) {
-    res.send(error);
+    return res.send(error);
   }
 };
