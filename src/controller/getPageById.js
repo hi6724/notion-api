@@ -43,7 +43,11 @@ export const getPageById = async ({ params: { id } }, res) => {
         if (payload.rich_text) {
           if (payload.rich_text.length > 0) {
             link = payload.rich_text[0].href;
-            payload = payload.rich_text[0].plain_text;
+            // payload = payload.rich_text[0].plain_text;
+            payload = payload.rich_text.reduce(
+              (acc, value) => acc + value.plain_text,
+              ""
+            );
           } else {
             type = "blank";
             payload = "";
