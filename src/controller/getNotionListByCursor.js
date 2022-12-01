@@ -13,6 +13,12 @@ export const getNotionListByCursor = async (req, res) => {
       database_id: notionDatabaseId,
       auth: notionSecret,
       page_size: req.query.count * 1,
+      sorts: [
+        {
+          property: "createdAt",
+          direction: req.query.sort === "asc" ? "ascending" : "descending",
+        },
+      ],
       ...(cursor != 0 && { start_cursor: cursor }),
       ...(req.query.filter &&
         req.query.filter !== "all" &&

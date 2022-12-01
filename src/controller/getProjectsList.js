@@ -12,6 +12,12 @@ export const getProjectList = async (req, res) => {
     const projects = await notion.databases.query({
       database_id,
       auth: notionSecret,
+      sorts: [
+        {
+          property: "date",
+          direction: "descending",
+        },
+      ],
     });
 
     const returnObj = projects.results.map((result) => {
