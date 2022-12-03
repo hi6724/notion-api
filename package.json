@@ -17,13 +17,13 @@
     "api": "^4.5.2",
     "cors": "^2.8.5",
     "express": "^4.18.1",
-    "regenerator-runtime": "^0.13.9"
-  },
-  "devDependencies": {
+    "regenerator-runtime": "^0.13.9",
     "@babel/cli": "^7.18.10",
     "@babel/core": "^7.19.0",
     "@babel/node": "^7.18.10",
-    "@babel/preset-env": "^7.19.0",
+    "@babel/preset-env": "^7.19.0"
+  },
+  "devDependencies": {
     "nodemon": "^2.0.19"
   }
 }
