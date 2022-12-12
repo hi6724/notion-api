@@ -26,7 +26,7 @@ var database_id = "cf6dea8440b04e5c85cf9bc986f546b7";
 
 var createGuestBook = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var notion, _req$body, user, title, content, result;
+    var notion, _req$body, user, title, content, _req$body$emoji, emoji, result;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -35,14 +35,14 @@ var createGuestBook = /*#__PURE__*/function () {
             notion = new _client.Client({
               auth: notionSecret
             });
-            _req$body = req.body, user = _req$body.user, title = _req$body.title, content = _req$body.content;
+            _req$body = req.body, user = _req$body.user, title = _req$body.title, content = _req$body.content, _req$body$emoji = _req$body.emoji, emoji = _req$body$emoji === void 0 ? "⭐" : _req$body$emoji;
             _context.next = 4;
             return notion.pages.create({
               parent: {
                 database_id: database_id
               },
               icon: {
-                emoji: "🥬"
+                emoji: emoji
               },
               properties: {
                 title: {

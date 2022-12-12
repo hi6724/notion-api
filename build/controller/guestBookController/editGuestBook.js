@@ -19,7 +19,7 @@ var notionSecret = "secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm";
 
 var editGuestBook = /*#__PURE__*/function () {
   var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-    var notion, _req$body, user, title, content, id, page, _JSON$parse, username, password;
+    var notion, _req$body, user, title, content, emoji, id, _yield$notion$pages$r, icon, properties, existContent, existTitle, existEmoji, _JSON$parse, username, password;
 
     return _regeneratorRuntime().wrap(function _callee$(_context) {
       while (1) {
@@ -28,7 +28,7 @@ var editGuestBook = /*#__PURE__*/function () {
             notion = new _client.Client({
               auth: notionSecret
             });
-            _req$body = req.body, user = _req$body.user, title = _req$body.title, content = _req$body.content, id = req.params.id;
+            _req$body = req.body, user = _req$body.user, title = _req$body.title, content = _req$body.content, emoji = _req$body.emoji, id = req.params.id;
             _context.next = 4;
             return notion.pages.retrieve({
               page_id: id,
@@ -36,11 +36,16 @@ var editGuestBook = /*#__PURE__*/function () {
             });
 
           case 4:
-            page = _context.sent;
-            _JSON$parse = JSON.parse(page.properties.user.rich_text[0].plain_text), username = _JSON$parse.username, password = _JSON$parse.password;
+            _yield$notion$pages$r = _context.sent;
+            icon = _yield$notion$pages$r.icon;
+            properties = _yield$notion$pages$r.properties;
+            existContent = properties.content.rich_text[0].plain_text;
+            existTitle = properties.title.title[0].plain_text;
+            existEmoji = icon.emoji;
+            _JSON$parse = JSON.parse(properties.user.rich_text[0].plain_text), username = _JSON$parse.username, password = _JSON$parse.password;
 
             if (!(user.username !== username || user.password !== password)) {
-              _context.next = 8;
+              _context.next = 13;
               break;
             }
 
@@ -48,34 +53,37 @@ var editGuestBook = /*#__PURE__*/function () {
               ok: false
             }));
 
-          case 8:
-            _context.next = 10;
+          case 13:
+            _context.next = 15;
             return notion.pages.update({
               page_id: id,
+              icon: {
+                emoji: emoji ? emoji : existEmoji
+              },
               properties: {
                 title: {
                   title: [{
                     text: {
-                      content: title
+                      content: title ? title : existTitle
                     }
                   }]
                 },
                 content: {
                   rich_text: [{
                     text: {
-                      content: content
+                      content: content ? content : existContent
                     }
                   }]
                 }
               }
             });
 
-          case 10:
+          case 15:
             return _context.abrupt("return", res.send({
               ok: true
             }));
 
-          case 11:
+          case 16:
           case "end":
             return _context.stop();
         }
