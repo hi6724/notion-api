@@ -8,25 +8,32 @@ export const editGuestBook = async (req, res) => {
   });
 
   const {
-    body: { user, title, content },
+    body: { user, title, content, emoji },
     params: { id },
   } = req;
 
-  const page = await notion.pages.retrieve({
+  const { icon, properties } = await notion.pages.retrieve({
     page_id: id,
     auth: notionSecret,
   });
+  const existContent = properties.content.rich_text[0].plain_text;
+  const existTitle = properties.title.title[0].plain_text;
+  const existEmoji = icon.emoji;
+
   const { username, password } = JSON.parse(
-    page.properties.user.rich_text[0].plain_text
+    properties.user.rich_text[0].plain_text
   );
   if (user.username !== username || user.password !== password) {
     return res.send({ ok: false });
   }
   await notion.pages.update({
     page_id: id,
+    icon: { emoji: emoji ? emoji : existEmoji },
     properties: {
-      title: { title: [{ text: { content: title } }] },
-      content: { rich_text: [{ text: { content } }] },
+      title: { title: [{ text: { content: title ? title : existTitle } }] },
+      content: {
+        rich_text: [{ text: { content: content ? content : existContent } }],
+      },
     },
   });
 
