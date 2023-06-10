@@ -4,7 +4,6 @@ const notionDatabaseId = '8a3bdeb10ce94834a5ba6a8476f4d43c';
 const notionSecret = 'secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm';
 
 export const getNotionListByCursor = async (req, res) => {
-  console.log('req.body');
   try {
     const notion = new Client({
       auth: notionSecret,
@@ -59,7 +58,6 @@ export const getNotionListByCursor = async (req, res) => {
       }),
     });
 
-    console.log(page.results);
     const returnObj = page.results.map((result) => {
       const id = result.id;
       const createdAt = result.properties.createdAt.created_time;
@@ -68,7 +66,6 @@ export const getNotionListByCursor = async (req, res) => {
       const title = result.properties.name.title[0].plain_text;
       return { id, createdAt, icon, type, title };
     });
-    console.log(returnObj);
     res.send({
       next_cursor: page.next_cursor,
       has_more: page.has_more,
