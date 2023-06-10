@@ -1,9 +1,10 @@
-import { Client } from "@notionhq/client";
+import { Client } from '@notionhq/client';
 
-const notionDatabaseId = "8a3bdeb10ce94834a5ba6a8476f4d43c";
-const notionSecret = "secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm";
+const notionDatabaseId = '8a3bdeb10ce94834a5ba6a8476f4d43c';
+const notionSecret = 'secret_WsQodOj0mpgr6p12JhzFqnbJZxkhJhraJ7WRvyLCofm';
 
 export const getNotionListByCursor = async (req, res) => {
+  console.log('req.body');
   try {
     const notion = new Client({
       auth: notionSecret,
@@ -15,42 +16,42 @@ export const getNotionListByCursor = async (req, res) => {
       page_size: req.query.count * 1,
       sorts: [
         {
-          property: "createdAt",
-          direction: req.query.sort === "asc" ? "ascending" : "descending",
+          property: 'createdAt',
+          direction: req.query.sort === 'asc' ? 'ascending' : 'descending',
         },
       ],
       ...(cursor != 0 && { start_cursor: cursor }),
       ...(req.query.filter &&
-        req.query.filter !== "all" &&
-        req.query.filter !== "others" && {
+        req.query.filter !== 'all' &&
+        req.query.filter !== 'others' && {
           filter: {
             and: [
               {
-                property: "type",
+                property: 'type',
                 select: { equals: req.query.filter },
               },
             ],
           },
         }),
-      ...(req.query.filter === "others" && {
+      ...(req.query.filter === 'others' && {
         filter: {
           and: [
             {
-              property: "type",
+              property: 'type',
               select: {
-                does_not_equal: "frontend",
+                does_not_equal: 'frontend',
               },
             },
             {
-              property: "type",
+              property: 'type',
               select: {
-                does_not_equal: "backend",
+                does_not_equal: 'backend',
               },
             },
             {
-              property: "type",
+              property: 'type',
               select: {
-                does_not_equal: "algorithm",
+                does_not_equal: 'algorithm',
               },
             },
           ],
@@ -58,17 +59,16 @@ export const getNotionListByCursor = async (req, res) => {
       }),
     });
 
+    console.log(page.results);
     const returnObj = page.results.map((result) => {
       const id = result.id;
       const createdAt = result.properties.createdAt.created_time;
       const icon = result.icon;
       const type = result.properties.type.select.name;
-      const status = result.properties.status.select.name;
-      const site = result.properties.site.rich_text[0].plain_text;
       const title = result.properties.name.title[0].plain_text;
-      return { id, createdAt, icon, type, status, site, title };
+      return { id, createdAt, icon, type, title };
     });
-
+    console.log(returnObj);
     res.send({
       next_cursor: page.next_cursor,
       has_more: page.has_more,
